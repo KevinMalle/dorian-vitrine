@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
-import Slider from "react-slick";
-import InfiniteCarousel from "../components/InfiniteCarousel";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,13 +19,6 @@ interface Projet {
   userId: number;
 }
 
-const images = [
-  { src: "/placeholder1.jpeg" },
-  { src: "/placeholder2.jpeg" },
-  { src: "/placeholder3.jpeg" },
-  { src: "/placeholder4.jpeg" },
-];
-
 export default function Home() {
   const [projets, setProjets] = useState<Projet[] | null>(null);
 
@@ -43,23 +34,6 @@ export default function Home() {
     }
     fetchProjets();
   }, []);
-
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 1 },
-      },
-    ],
-  };
 
   return (
     <>

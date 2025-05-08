@@ -201,7 +201,6 @@ const NavBar = () => {
                     <li key={index} className="drawer-item">
                       <button
                         onClick={() => {
-                          item.action && item.action();
                           toggleDrawer();
                         }}
                         className={`drawer-button ${
