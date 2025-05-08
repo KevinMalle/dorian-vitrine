@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Projet {
+  id                  Int      @id @default(autoincrement())
+  projetNom           String
+  projetDescription   String   @db.Text
+  projetUid           String
+  projetIsCompatible  Boolean
+  projetImage1        String
+  projetImage2        String
+  projetImage3        String
+  projetImage4        String
+  createdAt           DateTime @default(now())
+
+  /// 🔗 Relation vers User
+  userId              Int
+  utilisateur         User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  userNom           String
+  userPrenom        String
+  userEmail         String
+  userPassword      String
+  userDescription   String   @db.Text
+  userPp            String
+
+  /// 🔁 Relation inverse (un user a plusieurs projets)
+  projets           Projet[]
+}
