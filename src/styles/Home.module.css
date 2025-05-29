@@ -11,7 +11,13 @@
 }
 
 .projectList {
-  display: grid;
+  display: inline;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.projectImage {
+  display: inline;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
 }
@@ -19,7 +25,7 @@
 .projectCard {
   padding: 0 10px;
   box-sizing: border-box;
-  display: flex;
+  display: inline-block;
   flex-direction: column;
   align-items: center;
 }
@@ -41,6 +47,7 @@
 }
 
 .carouselWrapper {
+  display: flex;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -147,4 +154,65 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.carouselItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.carouselItem img {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.slick-slide {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.slick-center,
+.slick-active {
+  opacity: 1;
+}
+
+.carouselWrapper :global(.slick-slide) {
+  transition: transform 0.5s ease, filter 0.5s ease;
+  opacity: 0.6;
+  transform: scale(0.9);
+  filter: brightness(0.7);
+}
+
+.carouselWrapper :global(.slick-center) {
+  opacity: 1;
+  transform: scale(1.05);
+  filter: brightness(1);
+  z-index: 2;
+}
+
+.carouselWrapper :global(.slick-list) {
+  padding: 40px 0 !important;
+}
+
+.carouselWrapper :global(.slick-slide img) {
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
+  transition: box-shadow 0.3s ease;
+}
+
+.carouselWrapper {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.carouselWrapper :global(.slick-slider),
+.carouselWrapper :global(.slick-track),
+.carouselWrapper :global(.slick-slide) {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
