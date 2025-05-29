@@ -1,90 +1,73 @@
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
-interface CarouselImage {
+interface Projet {
+  id: number;
+  projetNom: string;
+  projetImage1: string;
+}
+
+interface ImageItem {
   src: string;
-  alt?: string;
 }
 
 interface InfiniteCarouselProps {
-  images: CarouselImage[];
+  projets: Projet[];
+  images?: ImageItem[];
 }
 
-const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({ images }) => {
-  const [hovered, setHovered] = useState<number | null>(null);
+export default function InfiniteCarousel({
+  projets,
+  images = [],
+}: InfiniteCarouselProps) {
+  const hasProjets = projets.length > 0;
 
   return (
-    <div className="carousel-container">
-      <div className="carousel-track">
-        {images.map((img, index) => (
-          <motion.div
-            key={img.src + index}
-            className="carousel-card"
-            onHoverStart={() => setHovered(index)}
-            onHoverEnd={() => setHovered(null)}
-          >
-            <AnimatePresence>
-              {hovered === index && (
-                <motion.div
-                  className="carousel-overlay"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+    <div className="infinite-carousel-wrapper">
+      <motion.div
+        className="infinite-carousel-track"
+        animate={{ x: [0, -1000] }}
+        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+      >
+        {hasProjets
+          ? [...projets, ...projets].map((projet, index) => (
+              <motion.div
+                className="carousel-card"
+                key={`${projet.id}-${index}`}
+                whileHover={{ scale: 1.05 }}
+                initial={{ opacity: 0.6 }}
+                animate={{ opacity: 1 }}
+              >
+                <Image
+                  src={projet.projetImage1 || "/placeholder.jpeg"}
+                  alt={projet.projetNom}
+                  width={200}
+                  height={280}
+                  className="carousel-img"
                 />
-              )}
-            </AnimatePresence>
-            <Image
-              src={img.src}
-              alt={img.alt || `carousel-img-${index}`}
-              width={300}
-              height={200}
-              className="carousel-image"
-            />
-          </motion.div>
-        ))}
-      </div>
-      <style jsx>{`
-        .carousel-container {
-          width: 100%;
-          overflow-x: scroll;
-          white-space: nowrap;
-          padding: 20px 0;
-        }
-
-        .carousel-track {
-          display: flex;
-          gap: 16px;
-        }
-
-        .carousel-card {
-          position: relative;
-          flex: 0 0 auto;
-          width: 300px;
-          height: 200px;
-          border-radius: 12px;
-          overflow: hidden;
-          background: #ccc;
-          cursor: pointer;
-        }
-
-        .carousel-image {
-          object-fit: cover;
-          border-radius: 12px;
-        }
-
-        .carousel-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 2;
-        }
-      `}</style>
+                <p className="carousel-title">{projet.projetNom}</p>
+              </motion.div>
+            ))
+          : images.map((img, index) => (
+              <motion.div
+                className="carousel-card"
+                key={`img-${index}`}
+                whileHover={{ scale: 1.05 }}
+                initial={{ opacity: 0.6 }}
+                animate={{ opacity: 1 }}
+              >
+                <Image
+                  src={img.src || "/placeholder.jpeg"}
+                  alt="placeholder"
+                  width={200}
+                  height={280}
+                  className="carousel-img"
+                />
+              </motion.div>
+            ))}
+      </motion.div>
     </div>
   );
-};
-
-export default InfiniteCarousel;
+}
